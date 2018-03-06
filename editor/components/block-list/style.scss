@@ -1,8 +1,4 @@
 .editor-block-list__layout {
-	// prevent collapsing margins on container
-	padding-top: .1px;
-	padding-bottom: .1px;
-
 	// make room in the main content column for the side UI
 	// the side UI uses negative margins to position itself so as to not affect the block width
 	@include break-small() {
@@ -327,7 +323,7 @@
 
 
 	/**
-	 * 	Left and right side UI
+	 * Left and right side UI
 	 */
 
 	.editor-block-settings-menu,
@@ -339,7 +335,7 @@
 
 	// Right side UI
 	.editor-block-settings-menu {
-		right: -$block-mover-margin -$block-padding + 2px;
+		right: #{ -1 * $block-mover-margin - $block-padding + 2px };
 		padding-top: 2px;
 
 		// Mobile
@@ -425,7 +421,7 @@
 
 .editor-block-list__insertion-point-indicator {
 	position: absolute;
-	top: $block-padding - 1px;	// Half the empty space between two blocks, minus the 2px height
+	top: $block-padding - 1px; // Half the empty space between two blocks, minus the 2px height
 	height: 2px;
 	left: 0;
 	right: 0;
@@ -445,7 +441,7 @@
 
 	&:before {
 		position: absolute;
-		top: $block-padding - 1px;	// Half the empty space between two blocks, minus the 2px height
+		top: $block-padding - 1px; // Half the empty space between two blocks, minus the 2px height
 		height: 2px;
 		left: $block-padding;
 		right: $block-padding;
