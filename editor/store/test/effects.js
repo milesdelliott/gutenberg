@@ -21,7 +21,6 @@ import {
 	setupEditorState,
 	resetBlocks,
 	mergeBlocks,
-	replaceBlocks,
 	savePost,
 	updateReusableBlock,
 	saveReusableBlock,
@@ -106,11 +105,16 @@ describe( 'effects', () => {
 
 			expect( dispatch ).toHaveBeenCalledTimes( 2 );
 			expect( dispatch ).toHaveBeenCalledWith( selectBlock( 'chicken', -1 ) );
-			expect( dispatch ).toHaveBeenCalledWith( replaceBlocks( [ 'chicken', 'ribs' ], [ {
-				uid: 'chicken',
-				name: 'core/test-block',
-				attributes: { content: 'chicken ribs' },
-			} ] ) );
+			expect( dispatch ).toHaveBeenCalledWith( {
+				type: 'REPLACE_BLOCKS',
+				uids: [ 'chicken', 'ribs' ],
+				blocks: [ {
+					uid: 'chicken',
+					name: 'core/test-block',
+					attributes: { content: 'chicken ribs' },
+				} ],
+				time: expect.any( Number ),
+			} );
 		} );
 
 		it( 'should not merge the blocks have different types without transformation', () => {
@@ -201,11 +205,16 @@ describe( 'effects', () => {
 
 			expect( dispatch ).toHaveBeenCalledTimes( 2 );
 			// expect( dispatch ).toHaveBeenCalledWith( focusBlock( 'chicken', { offset: -1 } ) );
-			expect( dispatch ).toHaveBeenCalledWith( replaceBlocks( [ 'chicken', 'ribs' ], [ {
-				uid: 'chicken',
-				name: 'core/test-block',
-				attributes: { content: 'chicken ribs' },
-			} ] ) );
+			expect( dispatch ).toHaveBeenCalledWith( {
+				type: 'REPLACE_BLOCKS',
+				uids: [ 'chicken', 'ribs' ],
+				blocks: [ {
+					uid: 'chicken',
+					name: 'core/test-block',
+					attributes: { content: 'chicken ribs' },
+				} ],
+				time: expect.any( Number ),
+			} );
 		} );
 	} );
 
@@ -743,12 +752,12 @@ describe( 'effects', () => {
 
 				handler( convertBlockToStatic( staticBlock.uid ), store );
 
-				expect( dispatch ).toHaveBeenCalledWith(
-					replaceBlocks(
-						[ staticBlock.uid ],
-						createBlock( reusableBlock.type, reusableBlock.attributes )
-					)
-				);
+				expect( dispatch ).toHaveBeenCalledWith( {
+					type: 'REPLACE_BLOCKS',
+					uids: [ staticBlock.uid ],
+					blocks: [ createBlock( reusableBlock.type, reusableBlock.attributes ) ],
+					time: expect.any( Number ),
+				} );
 			} );
 		} );
 
@@ -780,12 +789,12 @@ describe( 'effects', () => {
 				expect( dispatch ).toHaveBeenCalledWith(
 					saveReusableBlock( expect.any( Number ) )
 				);
-				expect( dispatch ).toHaveBeenCalledWith(
-					replaceBlocks(
-						[ staticBlock.uid ],
-						[ createBlock( 'core/block', { ref: expect.any( Number ) } ) ]
-					)
-				);
+				expect( dispatch ).toHaveBeenCalledWith( {
+					type: 'REPLACE_BLOCKS',
+					uids: [ staticBlock.uid ],
+					blocks: [ createBlock( 'core/block', { ref: expect.any( Number ) } ) ],
+					time: expect.any( Number ),
+				} );
 			} );
 		} );
 	} );
