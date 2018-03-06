@@ -5,7 +5,7 @@ $empty-paragraph-height: $text-editor-font-size * 4;
 	// Every other block puts the outline on a :before pseudo element, which places it inside
 	padding-top: 1px;
 
-	.editor-default-block-appender__content {
+	.editor-default-block-appender__content input[type=text] {
 		height: $empty-paragraph-height;
 		color: $dark-gray-300;
 		outline: 1px solid transparent;
@@ -23,6 +23,7 @@ $empty-paragraph-height: $text-editor-font-size * 4;
 	box-shadow: none;
 	display: block;
 	width: 100%;
+	padding: $block-padding;
 	height: $empty-paragraph-height;
 	font-size: $editor-font-size;
 	cursor: text;
