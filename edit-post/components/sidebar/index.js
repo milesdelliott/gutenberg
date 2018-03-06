@@ -16,7 +16,7 @@ import './style.scss';
 import PostSettings from './post-settings';
 import BlockInspectorPanel from './block-inspector-panel';
 import Header from './header';
-import { getActiveEditorPanel } from '../../store/selectors';
+import { getActiveGeneralSidebarName } from '../../store/selectors';
 
 /**
  * Returns the panel that should be rendered in the sidebar.
@@ -27,9 +27,9 @@ import { getActiveEditorPanel } from '../../store/selectors';
  */
 function getPanel( panel ) {
 	switch ( panel ) {
-		case 'document':
+		case 'edit-post/document':
 			return PostSettings;
-		case 'block':
+		case 'edit-post/block':
 			return BlockInspectorPanel;
 		default:
 			return PostSettings;
@@ -43,12 +43,8 @@ function getPanel( panel ) {
  *
  * @return {Object} The rendered sidebar.
  */
-const Sidebar = ( { panel } ) => {
-	const ActivePanel = getPanel( panel );
-
-	const props = {
-		panel,
-	};
+const Sidebar = ( { activeSidebarName } ) => {
+	const ActivePanel = getPanel( activeSidebarName );
 
 	return (
 		<div
@@ -58,7 +54,7 @@ const Sidebar = ( { panel } ) => {
 			tabIndex="-1"
 		>
 			<Header />
-			<ActivePanel { ...props } />
+			<ActivePanel panel={ activeSidebarName } />
 		</div>
 	);
 };
@@ -66,7 +62,7 @@ const Sidebar = ( { panel } ) => {
 export default connect(
 	( state ) => {
 		return {
-			panel: getActiveEditorPanel( state ),
+			activeSidebarName: getActiveGeneralSidebarName( state ),
 		};
 	},
 	undefined,

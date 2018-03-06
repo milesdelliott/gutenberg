@@ -31,42 +31,32 @@ import MetaBoxes from '../meta-boxes';
 import { getMetaBoxContainer } from '../../utils/meta-boxes';
 import {
 	getEditorMode,
-	hasOpenSidebar,
+	getActiveGeneralSidebarName,
 	isFeatureActive,
-	getOpenedGeneralSidebar,
 	isPublishSidebarOpened,
-	getActivePlugin,
 	getMetaBoxes,
 } from '../../store/selectors';
 import { closePublishSidebar } from '../../store/actions';
 import PluginsPanel from '../../components/plugins-panel/index.js';
-import { getSidebarSettings } from '../../api/sidebar';
 
-function GeneralSidebar( { openedGeneralSidebar } ) {
-	switch ( openedGeneralSidebar ) {
-		case 'editor':
-			return <Sidebar />;
-		case 'plugin':
-			return <PluginsPanel />;
-		default:
+function GeneralSidebar( { sidebarName } ) {
+	if ( [ 'edit-post/document', 'edit-post/block' ].includes( sidebarName ) ) {
+		return <Sidebar />;
 	}
-	return null;
+
+	return <PluginsPanel />;
 }
 
 function Layout( {
 	mode,
-	layoutHasOpenSidebar,
+	activeGeneralSidebarName,
 	publishSidebarOpen,
-	openedGeneralSidebar,
 	hasFixedToolbar,
 	onClosePublishSidebar,
-	plugin,
 	metaBoxes,
 } ) {
-	const isSidebarOpened = layoutHasOpenSidebar &&
-		( openedGeneralSidebar !== 'plugin' || getSidebarSettings( plugin ) );
 	const className = classnames( 'edit-post-layout', {
-		'is-sidebar-opened': isSidebarOpened,
+		'is-sidebar-opened': activeGeneralSidebarName || publishSidebarOpen,
 		'has-fixed-toolbar': hasFixedToolbar,
 	} );
 
@@ -97,8 +87,8 @@ function Layout( {
 			</div>
 			{ publishSidebarOpen && <PostPublishPanel onClose={ onClosePublishSidebar } /> }
 			{
-				openedGeneralSidebar !== null && <GeneralSidebar
-					openedGeneralSidebar={ openedGeneralSidebar } />
+				activeGeneralSidebarName && <GeneralSidebar
+					sidebarName={ activeGeneralSidebarName } />
 			}
 			<Popover.Slot />
 		</div>
@@ -108,11 +98,9 @@ function Layout( {
 export default connect(
 	( state ) => ( {
 		mode: getEditorMode( state ),
-		layoutHasOpenSidebar: hasOpenSidebar( state ),
-		openedGeneralSidebar: getOpenedGeneralSidebar( state ),
+		activeGeneralSidebarName: getActiveGeneralSidebarName( state ),
 		publishSidebarOpen: isPublishSidebarOpened( state ),
 		hasFixedToolbar: isFeatureActive( state, 'fixedToolbar' ),
-		plugin: getActivePlugin( state ),
 		metaBoxes: getMetaBoxes( state ),
 	} ),
 	{
