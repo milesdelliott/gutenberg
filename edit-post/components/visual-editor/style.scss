@@ -76,26 +76,8 @@
 }
 
 .edit-post-visual-editor .editor-default-block-appender {
-	max-width: $content-width + ( 2 * $block-side-ui-padding );
-	clear: left;
+	// Default to centered and content-width, like blocks
 	margin-left: auto;
 	margin-right: auto;
-	position: relative;
-
-	@include break-small() {
-		padding: 0 $block-side-ui-padding;	// don't subtract 1px border because it's a border not an outline
-
-		.components-drop-zone {
-			left: $block-side-ui-padding;
-			right: $block-side-ui-padding;
-		}
-
-		.editor-default-block-appender__content {
-			padding: 0 $block-padding;
-		}
-	}
-}
-
-.edit-post-visual-editor .editor-block-list__layout > .editor-block-list__insertion-point {
 	max-width: $content-width;
 }
